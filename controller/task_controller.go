@@ -49,7 +49,6 @@ func (tc *taskController) GetTaskById(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, taskRes)
-
 }
 
 func (tc *taskController) CreateTask(c echo.Context) error {
@@ -66,7 +65,7 @@ func (tc *taskController) CreateTask(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, taskRes)
+	return c.JSON(http.StatusCreated, taskRes)
 }
 
 func (tc *taskController) UpdateTask(c echo.Context) error {
@@ -94,7 +93,8 @@ func (tc *taskController) DeleteTask(c echo.Context) error {
 	id := c.Param("taskId")
 	taskId, _ := strconv.Atoi(id)
 
-	if err := tc.tu.DeleteTask(uint(userId.(float64)), uint(taskId)); err != nil {
+	err := tc.tu.DeleteTask(uint(userId.(float64)), uint(taskId))
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	// return c.JSON(http.StatusOK, "Task deleted successfully")

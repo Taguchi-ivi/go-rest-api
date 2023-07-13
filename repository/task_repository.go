@@ -34,14 +34,12 @@ func (tr *taskRepository) GetAllTasks(tasks *[]model.Task, userId uint) error {
 }
 
 func (tr *taskRepository) GetTaskById(task *model.Task, userId uint, taskId uint) error {
-	// if err := tr.db.Joins("User").Where("user_id=? AND id=?", userId, taskId).First(task).Error; err != nil {
 	if err := tr.db.Joins("User").Where("user_id=?", userId).First(task, taskId).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-// taskのポインタを引数で渡す
 func (tr *taskRepository) CreateTask(task *model.Task) error {
 	if err := tr.db.Create(task).Error; err != nil {
 		return err
@@ -50,12 +48,10 @@ func (tr *taskRepository) CreateTask(task *model.Task) error {
 }
 
 func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint) error {
-	// Cluauses(clause.Returning{})を追加することで、更新後のtaskを返す(ポインタ変数に格納する)ことができる
-	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id?", taskId, userId).Update("title", task.Title)
+	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id=?", taskId, userId).Update("title", task.Title)
 	if result.Error != nil {
 		return result.Error
 	}
-	// 更新した件数を取得して、0件ならエラーを返す
 	if result.RowsAffected < 1 {
 		return fmt.Errorf("object does not exist")
 	}
