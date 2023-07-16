@@ -5,6 +5,8 @@
 - Go => go version go1.20.5 darwin/arm64
 - React => 18.2.15
   - tailwindcss使う(https://tailwindcss.com/docs/guides/create-react-app)
+
+- **※デプロイは対応していない**
 ## 学んだこと
 
 - Go 外部パッケージを読み込んだ時は必ず下記を実行する
