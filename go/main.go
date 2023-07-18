@@ -19,13 +19,17 @@ func main() {
 	db := db.NewDB()
 	userValidator := validator.NewUserValidator()
 	taskValidator := validator.NewTaskValidator()
+	tweetValidator := validator.NewTweetValidator()
 	userRepository := repository.NewUserRepository(db)
 	taskRepository := repository.NewTaskRepository(db)
+	tweetRepository := repository.NewTweetRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	taskUsecase := usecase.NewTaskUsecase(taskRepository, taskValidator)
+	tweetUsecase := usecase.NewTweetUsecase(tweetRepository, tweetValidator)
 	userController := controller.NewUserController(userUsecase)
 	taskController := controller.NewTaskController(taskUsecase)
-	e := router.NewRouter(userController, taskController)
+	tweetController := controller.NewTweetController(tweetUsecase)
+	e := router.NewRouter(userController, taskController, tweetController)
 
 	e.Logger.Fatal(e.Start(":8080"))
 
