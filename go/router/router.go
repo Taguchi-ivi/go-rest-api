@@ -27,8 +27,8 @@ func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc
 		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
 		// postmainで動作確認をする際はnonemodeだとエラーになるため、defaultmodeに変更
-		CookieSameSite: http.SameSiteNoneMode,
-		// CookieSameSite: http.SameSiteDefaultMode,
+		// CookieSameSite: http.SameSiteNoneMode,
+		CookieSameSite: http.SameSiteDefaultMode,
 		// CookieMaxAge: 60,
 	}))
 	e.POST("/signup", uc.SignUp)
