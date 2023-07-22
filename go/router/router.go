@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc controller.ITweetController) *echo.Echo {
+func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc controller.ITweetController, tttc controller.ITodoController) *echo.Echo {
 	e := echo.New()
 
 	// corsのmiddlewareを設定
@@ -46,6 +46,7 @@ func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc
 	t.POST("", tc.CreateTask)
 	t.PUT("/:taskId", tc.UpdateTask)
 	t.DELETE("/:taskId", tc.DeleteTask)
+
 	tw := e.Group("/tweets")
 	tw.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
@@ -56,6 +57,17 @@ func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc
 	tw.POST("", ttc.CreateTweet)
 	tw.PUT("/:tweetId", ttc.UpdateTweet)
 	tw.DELETE("/:tweetId", ttc.DeleteTweet)
+
+	td := e.Group("/todos")
+	td.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	td.GET("", tttc.GetAllTodos)
+	td.GET("/:todoId", tttc.GetTodoById)
+	td.POST("", tttc.CreateTodo)
+	td.PUT("/:todoId", tttc.UpdateTodo)
+	td.DELETE("/:todoId", tttc.DeleteTodo)
 
 	return e
 }
