@@ -27,7 +27,7 @@ func NewTweetController(tu usecase.ITweetUsecase) ITweetController {
 }
 
 func (tc *tweetController) GetAllTweet(c echo.Context) error {
-	user := c.Get("userId").(*jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
@@ -40,7 +40,7 @@ func (tc *tweetController) GetAllTweet(c echo.Context) error {
 }
 
 func (tu *tweetController) GetTweetById(c echo.Context) error {
-	user := c.Get("userId").(*jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 	id := c.Param("tweetId")
@@ -53,7 +53,7 @@ func (tu *tweetController) GetTweetById(c echo.Context) error {
 }
 
 func (tu *tweetController) CreateTweet(c echo.Context) error {
-	user := c.Get("userId").(*jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
@@ -70,7 +70,7 @@ func (tu *tweetController) CreateTweet(c echo.Context) error {
 }
 
 func (tu *tweetController) UpdateTweet(c echo.Context) error {
-	user := c.Get("userId").(*jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 	id := c.Param("tweetId")
@@ -88,7 +88,7 @@ func (tu *tweetController) UpdateTweet(c echo.Context) error {
 }
 
 func (tu *tweetController) DeleteTweet(c echo.Context) error {
-	user := c.Get("userId").(*jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 	id := c.Param("tweetId")
