@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, tc controller.ITaskController) *echo.Echo {
+func NewRouter(uc controller.IUserController, tc controller.ITaskController, ttc controller.ITweetController) *echo.Echo {
 	e := echo.New()
 
 	// corsのmiddlewareを設定
@@ -27,8 +27,8 @@ func NewRouter(uc controller.IUserController, tc controller.ITaskController) *ec
 		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
 		// postmainで動作確認をする際はnonemodeだとエラーになるため、defaultmodeに変更
-		CookieSameSite: http.SameSiteNoneMode,
-		// CookieSameSite: http.SameSiteDefaultMode,
+		// CookieSameSite: http.SameSiteNoneMode,
+		CookieSameSite: http.SameSiteDefaultMode,
 		// CookieMaxAge: 60,
 	}))
 	e.POST("/signup", uc.SignUp)
@@ -46,5 +46,16 @@ func NewRouter(uc controller.IUserController, tc controller.ITaskController) *ec
 	t.POST("", tc.CreateTask)
 	t.PUT("/:taskId", tc.UpdateTask)
 	t.DELETE("/:taskId", tc.DeleteTask)
+	tw := e.Group("/tweets")
+	tw.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	tw.GET("", ttc.GetAllTweet)
+	tw.GET("/:tweetId", ttc.GetTweetById)
+	tw.POST("", ttc.CreateTweet)
+	tw.PUT("/:tweetId", ttc.UpdateTweet)
+	tw.DELETE("/:tweetId", ttc.DeleteTweet)
+
 	return e
 }

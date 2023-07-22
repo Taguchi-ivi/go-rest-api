@@ -57,7 +57,7 @@ func (uc *userController) LogIn(c echo.Context) error {
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
 	// postmanを使うため一時的にコメントアウト secure => true
-	cookie.Secure = true
+	// cookie.Secure = true
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
@@ -74,7 +74,7 @@ func (uc *userController) LogOut(c echo.Context) error {
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
 	// postmanを使うため一時的にコメントアウト secure => true
-	cookie.Secure = true
+	// cookie.Secure = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
 	return c.NoContent(http.StatusOK)
