@@ -13,5 +13,5 @@ func main() {
 	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbConn)
 	// フィールドの値をゼロ値にして、テーブルを作成する
-	dbConn.AutoMigrate(&model.User{}, &model.Task{}, &model.Tweet{})
+	dbConn.AutoMigrate(&model.User{}, &model.Task{}, &model.Tweet{}, &model.Todo{})
 }
